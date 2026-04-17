@@ -58,3 +58,12 @@ def test_multiple_fruits_at_size_20():
     game.body = [(i, 0) for i in range(20)]
     game.update_fruits()
     assert len(game.fruits) == 3
+
+def test_collision_with_self_ends_game():
+    game = Snake(20, 20)
+    game.body = [(10, 10), (11, 10), (11, 11), (10, 11)]
+    game.alive = True
+    
+    game.move('s')
+    
+    assert game.alive == False
