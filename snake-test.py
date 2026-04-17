@@ -39,3 +39,10 @@ def test_snake_wrap_around_vertical():
     game.move('w')
 
     assert game.body[0] == (10, 19)
+
+def test_snake_grows_when_eating():
+    game = Snake(20, 20)
+    game.fruits = [(11, 10)] 
+    game.move('d')
+    assert len(game.body) == 2
+    assert (11, 10) not in game.fruits
