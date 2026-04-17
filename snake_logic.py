@@ -1,3 +1,5 @@
 class Snake:
     def __init__(self, width, height):
-        self.body = [(10, 10)]
+        self.width = width
+        self.height = height
+        self.body = [(width//2, height//2)]
