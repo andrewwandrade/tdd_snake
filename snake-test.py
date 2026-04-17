@@ -46,3 +46,15 @@ def test_snake_grows_when_eating():
     game.move('d')
     assert len(game.body) == 2
     assert (11, 10) not in game.fruits
+
+def test_multiple_fruits_at_size_10():
+    game = Snake(20, 20)
+    game.body = [(i, 0) for i in range(10)]
+    game.update_fruits()
+    assert len(game.fruits) == 2
+
+def test_multiple_fruits_at_size_20():
+    game = Snake(20, 20)
+    game.body = [(i, 0) for i in range(20)]
+    game.update_fruits()
+    assert len(game.fruits) == 3
