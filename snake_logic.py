@@ -19,7 +19,7 @@ class Snake:
         while True:
             new_fruit = (random.randint(0, self.width - 1), 
                          random.randint(0, self.height - 1))
-            if new_fruit not in self.body:
+            if new_fruit not in self.body and new_fruit not in self.fruits:
                 self.fruits.append(new_fruit)
                 break
     
@@ -44,6 +44,7 @@ class Snake:
 
         if new_head in self.fruits:
             self.fruits.remove(new_head)
-            self.update_fruits()
         else:
             self.body.pop()
+        
+        self.update_fruits()
