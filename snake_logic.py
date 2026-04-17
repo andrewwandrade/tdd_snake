@@ -11,14 +11,12 @@ class Snake:
         self.height = height
         self.body = [(width//2, height//2)]
 
-    def move(self, direction):
-        if direction not in MOVES:
-            return
-
+    def _calculate_new_position(self, direction):
         dx, dy = MOVES[direction]
         x, y = self.body[0]
+        return (x + dx) % self.width, (y + dy) % self.height
 
-        new_x = (x + dx) % self.width
-        new_y = (y + dy) % self.height
-        
-        self.body = [(new_x, new_y)]
+    def move(self, direction):
+        if direction in MOVES:
+            new_head = self._calculate_new_position(direction)
+            self.body = [new_head]
