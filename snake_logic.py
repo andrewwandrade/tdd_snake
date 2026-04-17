@@ -36,10 +36,7 @@ class Snake:
         return (x + dx) % self.width, (y + dy) % self.height
 
     def move(self, direction):
-        if not self.alive:
-            return
-        
-        if direction not in MOVES:
+        if not self.alive or direction not in MOVES:
             return
 
         new_head = self._calculate_new_position(direction)
