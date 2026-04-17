@@ -14,6 +14,7 @@ class Snake:
         self.body = [(width//2, height//2)]
         self.fruits = []
         self.update_fruits() 
+        self.alive = True 
 
     def spawn_fruit(self):
         while True:
@@ -35,10 +36,17 @@ class Snake:
         return (x + dx) % self.width, (y + dy) % self.height
 
     def move(self, direction):
+        if not self.alive:
+            return
+        
         if direction not in MOVES:
             return
 
         new_head = self._calculate_new_position(direction)
+
+        if new_head in self.body:
+            self.alive = False
+            return 
         
         self.body.insert(0, new_head)
 
