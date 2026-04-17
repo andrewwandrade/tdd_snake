@@ -13,7 +13,7 @@ class Snake:
         self.height = height
         self.body = [(width//2, height//2)]
         self.fruits = []
-        self.spawn_fruit()
+        self.update_fruits() 
 
     def spawn_fruit(self):
         while True:
@@ -22,6 +22,12 @@ class Snake:
             if new_fruit not in self.body:
                 self.fruits.append(new_fruit)
                 break
+    
+    def update_fruits(self):
+        target_count = (len(self.body)//10) + 1
+        
+        while len(self.fruits) < target_count:
+            self.spawn_fruit()
 
     def _calculate_new_position(self, direction):
         dx, dy = MOVES[direction]
@@ -38,6 +44,6 @@ class Snake:
 
         if new_head in self.fruits:
             self.fruits.remove(new_head)
-            self.spawn_fruit()
+            self.update_fruits()
         else:
             self.body.pop()
