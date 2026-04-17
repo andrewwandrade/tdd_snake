@@ -1,7 +1,7 @@
 import os
 import keyboard
 import time
-
+from snake_logic import Snake
 
 class io_handler:
     
@@ -54,18 +54,40 @@ class io_handler:
             display_content_line(line)
         display_h_line(self)
 
-### exemplo do uso da classe io_handler  
-instance = io_handler((10,15), 0.5)
-instance.matrix[0][0] = 1 #corpo
-instance.matrix[0][1] = 2 #cabeça
-instance.matrix[0][2] = 3 #fruta
-
 def game_loop():
+    #Configurações de inicialização do jogo
+    dim = (10, 15)
+    speed = 0.3
+    instance = io_handler(dim, speed)
+    game = Snake(dim[0], dim[1])
+    
     instance.record_inputs()
+    
     while True:
+        for y in range(instance.y_size):
+            for x in range(instance.x_size):
+                instance.matrix[y][x] = 0   
+
+        game.move(instance.last_input)
+        
+        if not game.alive:
+            pontuacao_final = len(game.body)
+            print("\n")
+            print("="*21)
+            print("GAME OVER!")
+            print(f"PONTUAÇÃO FINAL: {pontuacao_final}")
+            print("="*21)
+            print("\n")
+            break
+
+        for fruit_x, fruit_y in game.fruits:
+            instance.matrix[fruit_y][fruit_x] = 3
+        for i, (body_x, body_y) in enumerate(game.body):
+            instance.matrix[body_y][body_x] = 2 if i == 0 else 1
+        
         instance.display()
+        print(f"Pontos: {len(game.body)} | ", end='') 
         print("mova com WASD, saia com esc. Ultimo botão:", end=' ')
-        ###adicione seu código para lidar com o jogo aqui
 
         print(instance.last_input)
         if(instance.last_input == 'end'):
