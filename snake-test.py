@@ -23,3 +23,19 @@ def test_snake_moves_down():
     game = Snake(20, 20)
     game.move('s') 
     assert game.body[0] == (10, 11)
+
+def test_snake_wrap_around_horizontal():
+    game = Snake(width=20, height=20)
+    
+    game.body = [(19, 10)]
+    game.move('d') 
+
+    assert game.body[0] == (0, 10)
+
+def test_snake_wrap_around_vertical():
+    game = Snake(width=20, height=20)
+    
+    game.body = [(10, 0)]
+    game.move('w')
+
+    assert game.body[0] == (10, 19)
