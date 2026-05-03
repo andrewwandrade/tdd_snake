@@ -201,3 +201,43 @@ class PygameRenderer:
 
     def quit(self):
         pygame.quit()
+
+def game_loop():
+    DIM = (20, 15)
+    game     = Snake(DIM[0], DIM[1])
+    renderer = PygameRenderer(width=DIM[0], height=DIM[1])
+
+    last_direction = 'w'
+
+    while True:
+        cmd = renderer.poll_events()
+        if cmd == 'end':
+            break
+        if cmd is not None:
+            last_direction = cmd
+
+        game.move(last_direction)
+
+        if not game.alive:
+            renderer.build_frame(game)
+            renderer.draw_game_over(len(game.body))
+            renderer.flip()
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        waiting = False
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                        waiting = False
+            break
+
+        renderer.build_frame(game)
+        renderer.draw_score(len(game.body))
+        renderer.flip()
+        renderer.tick(FPS)
+
+    renderer.quit()
+
+
+if __name__ == "__main__":
+    game_loop()
