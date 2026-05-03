@@ -18,6 +18,39 @@ KEY_MAP = {
     pygame.K_ESCAPE: 'end',
 }
 
+DIRECTION_NAME = {
+    (1, 0): 'right',
+    (-1, 0): 'left',
+    (0, -1): 'up',
+    (0, 1): 'down',
+}
+
+def direction(a: tuple, b: tuple, width: int, height: int) -> tuple:
+    dx = b[0] - a[0]
+    dy = b[1] - a[1]
+    if dx > width // 2: dx -= width
+    if dx < -width // 2: dx += width
+    if dy > height // 2: dy -= height
+    if dy < -height // 2: dy += height
+    return (dx, dy)
+
+def get_segment_type(prev, current, next_seg, width: int, height: int) -> str:
+    if prev is None:
+        d = direction(current, next_seg, width, height)
+        return f"head_{DIRECTION_NAME[d]}"
+
+    if next_seg is None:
+        d = direction(prev, current, width, height)
+        return f"tail_{DIRECTION_NAME[d]}"
+
+    d_in = direction(prev, current, width, height)
+    d_out = direction(current, next_seg, width, height)
+
+    if d_in == d_out:
+        return 'body_horizontal' if d_in[0] != 0 else 'body_vertical'
+
+    return f"turn_{d_in}_{d_out}"
+
 class PygameRenderer:
     def __init__(self, width: int, height: int, cell_size: int = CELL_SIZE):
         self.width = width
