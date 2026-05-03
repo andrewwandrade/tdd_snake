@@ -1,5 +1,6 @@
 import pygame
 import os
+from snake_logic import Snake
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
 
@@ -198,13 +199,21 @@ class PygameRenderer:
 
     def tick(self, fps: int = FPS):
         self.clock.tick(fps)
+    
+    def wait_for_exit(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
 
     def quit(self):
         pygame.quit()
 
 def game_loop():
     DIM = (20, 15)
-    game     = Snake(DIM[0], DIM[1])
+    game = Snake(DIM[0], DIM[1])
     renderer = PygameRenderer(width=DIM[0], height=DIM[1])
 
     last_direction = 'w'
@@ -222,13 +231,7 @@ def game_loop():
             renderer.build_frame(game)
             renderer.draw_game_over(len(game.body))
             renderer.flip()
-            waiting = True
-            while waiting:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        waiting = False
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                        waiting = False
+            renderer.wait_for_exit() 
             break
 
         renderer.build_frame(game)
@@ -237,7 +240,6 @@ def game_loop():
         renderer.tick(FPS)
 
     renderer.quit()
-
 
 if __name__ == "__main__":
     game_loop()
