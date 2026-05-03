@@ -67,6 +67,9 @@ def direction(a: tuple, b: tuple, width: int, height: int) -> tuple:
     return (dx, dy)
 
 def get_segment_type(prev, current, next_seg, width: int, height: int) -> str:
+    if prev is None and next_seg is None:
+        return 'head_right'  
+
     if prev is None:
         d = direction(current, next_seg, width, height)
         return f"head_{DIRECTION_NAME[d]}"
@@ -75,7 +78,7 @@ def get_segment_type(prev, current, next_seg, width: int, height: int) -> str:
         d = direction(prev, current, width, height)
         return f"tail_{DIRECTION_NAME[d]}"
 
-    d_in = direction(prev, current, width, height)
+    d_in  = direction(prev, current, width, height)
     d_out = direction(current, next_seg, width, height)
 
     if d_in == d_out:
@@ -109,6 +112,7 @@ class PygameRenderer:
         self.clock = pygame.time.Clock()
         self.font_big = pygame.font.SysFont("monospace", 36, bold=True)
         self.font_small = pygame.font.SysFont("monospace", 20)
+        self.assets = load_assets(cell_size)
 
     def translate_key(self, key: int):
         return KEY_MAP.get(key, None)
@@ -148,11 +152,27 @@ class PygameRenderer:
         self.draw_grid()
 
         for fx, fy in game.fruits:
-            self.draw_cell(fx, fy, COLOR_FRUIT, shrink=4)
+            self.draw_sprite_or_color(fx, fy, 'fruit', COLOR_FRUIT)
 
-        for i, (bx, by) in enumerate(game.body):
+        body = game.body
+        n = len(body)
+
+        for i, (bx, by) in enumerate(body):
+            prev = body[i - 1] if i > 0 else None
+            next_seg = body[i + 1] if i < n - 1 else None
+
+            seg_type = get_segment_type(
+                prev, (bx, by), next_seg, self.width, self.height
+            )
             color = COLOR_SNAKE_HEAD if i == 0 else COLOR_SNAKE_BODY
-            self.draw_cell(bx, by, color)
+            self.draw_sprite_or_color(bx, by, seg_type, color)
+    
+    def draw_sprite_or_color(self, x: int, y: int, key: str, fallback_color: tuple):
+        sprite = self.assets.get(key)
+        if sprite:
+            self.screen.blit(sprite, (x * self.cell_size, y * self.cell_size))
+        else:
+            self.draw_cell(x, y, fallback_color)
 
     def draw_score(self, score: int):
         surf = self.font_small.render(f"Pontos: {score}", True, COLOR_TEXT)
