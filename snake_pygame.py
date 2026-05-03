@@ -1,6 +1,8 @@
 import pygame
 
 CELL_SIZE = 32
+FPS = 10
+
 COLOR_BG = (15, 15, 15)
 COLOR_SNAKE_HEAD = (80, 220, 80)
 COLOR_SNAKE_BODY = (40, 160, 40)
@@ -94,6 +96,12 @@ class PygameRenderer:
         self.draw_centered_text("GAME OVER", self.font_big, (220, 60, 60), cy - 40)
         self.draw_centered_text(f"Pontuação final: {score}", self.font_small, COLOR_TEXT, cy + 10)
         self.draw_centered_text("Pressione ESC para sair", self.font_small, (160, 160, 160), cy + 45)
+
+    def flip(self):
+        pygame.display.flip()
+
+    def tick(self, fps: int = FPS):
+        self.clock.tick(fps)
 
     def quit(self):
         pygame.quit()
