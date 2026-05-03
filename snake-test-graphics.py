@@ -54,3 +54,10 @@ def test_draw_score():
     renderer.build_frame(Snake(10, 10))
     renderer.draw_score(5)
     renderer.quit()
+
+def test_draw_game_over():
+    pygame.init()
+    renderer = PygameRenderer(width=10, height=10, cell_size=20)
+    renderer.build_frame(Snake(10, 10))
+    renderer.draw_game_over(3)
+    renderer.quit()
