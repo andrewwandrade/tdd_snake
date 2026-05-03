@@ -25,6 +25,17 @@ DIRECTION_NAME = {
     (0, 1): 'down',
 }
 
+TURN_MAP = {
+    ((1,0), (0,1)): 'body_topright',
+    ((0,1), (1,0)): 'body_topright',
+    ((-1,0), (0,1)): 'body_topleft',
+    ((0,1), (-1,0)): 'body_topleft',
+    ((1,0), (0,-1)): 'body_bottomright',
+    ((0,-1), (1,0)): 'body_bottomright',
+    ((-1,0), (0,-1)): 'body_bottomleft',
+    ((0,-1), (-1,0)): 'body_bottomleft',
+}
+
 def direction(a: tuple, b: tuple, width: int, height: int) -> tuple:
     dx = b[0] - a[0]
     dy = b[1] - a[1]
@@ -49,7 +60,7 @@ def get_segment_type(prev, current, next_seg, width: int, height: int) -> str:
     if d_in == d_out:
         return 'body_horizontal' if d_in[0] != 0 else 'body_vertical'
 
-    return f"turn_{d_in}_{d_out}"
+    return TURN_MAP[(d_in, d_out)]
 
 class PygameRenderer:
     def __init__(self, width: int, height: int, cell_size: int = CELL_SIZE):
