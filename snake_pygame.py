@@ -6,6 +6,7 @@ COLOR_SNAKE_HEAD = (80, 220, 80)
 COLOR_SNAKE_BODY = (40, 160, 40)
 COLOR_FRUIT = (220, 60, 60)
 COLOR_GRID = (30, 30, 30)
+COLOR_TEXT = (240, 240, 240)
 
 KEY_MAP = {
     pygame.K_w: 'w',
@@ -52,8 +53,6 @@ class PygameRenderer:
             self.cell_size - shrink * 2,
         )
         pygame.draw.rect(self.screen, color, rect, border_radius=4)
-    
-    ############
 
     def draw_grid(self):
         for col in range(self.width):
@@ -76,6 +75,10 @@ class PygameRenderer:
         for i, (bx, by) in enumerate(game.body):
             color = COLOR_SNAKE_HEAD if i == 0 else COLOR_SNAKE_BODY
             self.draw_cell(bx, by, color)
+
+    def draw_score(self, score: int):
+        surf = self.font_small.render(f"Pontos: {score}", True, COLOR_TEXT)
+        self.screen.blit(surf, (8, 8))
 
     def quit(self):
         pygame.quit()
