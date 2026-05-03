@@ -28,6 +28,16 @@ class PygameRenderer:
 
     def translate_key(self, key: int):
         return KEY_MAP.get(key, None)
+    
+    def poll_events(self) -> str | None:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return 'end'
+            if event.type == pygame.KEYDOWN:
+                cmd = self.translate_key(event.key)
+                if cmd is not None:
+                    return cmd
+        return None
 
     def quit(self):
         pygame.quit()
