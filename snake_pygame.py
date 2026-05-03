@@ -5,6 +5,7 @@ COLOR_BG = (15, 15, 15)
 COLOR_SNAKE_HEAD = (80, 220, 80)
 COLOR_SNAKE_BODY = (40, 160, 40)
 COLOR_FRUIT = (220, 60, 60)
+COLOR_GRID = (30, 30, 30)
 
 KEY_MAP = {
     pygame.K_w: 'w',
@@ -51,9 +52,23 @@ class PygameRenderer:
             self.cell_size - shrink * 2,
         )
         pygame.draw.rect(self.screen, color, rect, border_radius=4)
+    
+    ############
+
+    def draw_grid(self):
+        for col in range(self.width):
+            for row in range(self.height):
+                rect = pygame.Rect(
+                    col * self.cell_size,
+                    row * self.cell_size,
+                    self.cell_size,
+                    self.cell_size,
+                )
+                pygame.draw.rect(self.screen, COLOR_GRID, rect, 1)
 
     def build_frame(self, game):
         self.screen.fill(COLOR_BG)
+        self.draw_grid()
 
         for fx, fy in game.fruits:
             self.draw_cell(fx, fy, COLOR_FRUIT, shrink=4)
