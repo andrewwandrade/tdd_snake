@@ -12,6 +12,11 @@ class PygameRenderer:
         self.screen = pygame.display.set_mode(
             (width * cell_size, height * cell_size)
         )
+        pygame.display.set_caption("Snake")
+
+        self.clock = pygame.time.Clock()
+        self.font_big = pygame.font.SysFont("monospace", 36, bold=True)
+        self.font_small = pygame.font.SysFont("monospace", 20)
 
     def quit(self):
         pygame.quit()
