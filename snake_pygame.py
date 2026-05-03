@@ -79,6 +79,22 @@ class PygameRenderer:
     def draw_score(self, score: int):
         surf = self.font_small.render(f"Pontos: {score}", True, COLOR_TEXT)
         self.screen.blit(surf, (8, 8))
+    
+    def draw_game_over(self, score: int):
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 160))
+        self.screen.blit(overlay, (0, 0))
+
+        cx = self.screen.get_width()  // 2
+        cy = self.screen.get_height() // 2
+
+        title = self.font_big.render("GAME OVER", True, (220, 60, 60))
+        score_surf = self.font_small.render(f"Pontuação final: {score}", True, COLOR_TEXT)
+        hint = self.font_small.render("Pressione ESC para sair", True, (160, 160, 160))
+
+        self.screen.blit(title, title.get_rect(center=(cx, cy - 40)))
+        self.screen.blit(score_surf, score_surf.get_rect(center=(cx, cy + 10)))
+        self.screen.blit(hint, hint.get_rect(center=(cx, cy + 45)))
 
     def quit(self):
         pygame.quit()
