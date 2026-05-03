@@ -1,6 +1,7 @@
 import os
 import pygame
 from snake_logic import Snake
+from snake_pygame import get_segment_type
 
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 os.environ["SDL_AUDIODRIVER"] = "dummy"
@@ -74,3 +75,21 @@ def test_tick_not_exception():
     renderer = PygameRenderer(width=10, height=10, cell_size=20)
     renderer.tick(60)
     renderer.quit()
+
+def test_head_direita():
+    assert get_segment_type(None, (5,5), (6,5), 20, 20) == 'head_right'
+
+def test_head_baixo():
+    assert get_segment_type(None, (5,5), (5,6), 20, 20) == 'head_down'
+
+def test_body_horizontal():
+    assert get_segment_type((3,5), (4,5), (5,5), 20, 20) == 'body_horizontal'
+
+def test_body_vertical():
+    assert get_segment_type((5,3), (5,4), (5,5), 20, 20) == 'body_vertical'
+
+def test_tail_direita():
+    assert get_segment_type((5,5), (6,5), None, 20, 20) == 'tail_right'
+
+def test_head_wrap_horizontal():
+    assert get_segment_type(None, (19,5), (0,5), 20, 20) == 'head_right'
