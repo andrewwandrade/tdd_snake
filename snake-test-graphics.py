@@ -47,3 +47,10 @@ def test_build_frame_snake_with_multiple_segments():
     game.body = [(5, 5), (4, 5), (3, 5)]
     renderer.build_frame(game)
     renderer.quit()
+
+def test_draw_score():
+    pygame.init()
+    renderer = PygameRenderer(width=10, height=10, cell_size=20)
+    renderer.build_frame(Snake(10, 10))
+    renderer.draw_score(5)
+    renderer.quit()
