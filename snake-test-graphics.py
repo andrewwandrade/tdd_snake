@@ -1,8 +1,10 @@
 import os
 import pygame
+import threading
 from snake_logic import Snake
 from snake_pygame import get_segment_type
 from snake_pygame import load_assets
+from snake_pygame import game_loop
 
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 os.environ["SDL_AUDIODRIVER"] = "dummy"
@@ -120,3 +122,6 @@ def test_load_assets_values_are_surface_or_none():
     for key, val in assets.items():
         assert val is None or isinstance(val, pygame.Surface), \
             f"{key} deveria ser Surface ou None, é {type(val)}"
+
+def test_game_loop_importavel():
+    assert callable(game_loop)
