@@ -1,4 +1,25 @@
 import pygame
+import os
+
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
+
+SPRITE_FILES = {
+    'head_up': 'head_up.png',
+    'head_down': 'head_down.png',
+    'head_left': 'head_left.png',
+    'head_right': 'head_right.png',
+    'body_horizontal': 'body_horizontal.png',
+    'body_vertical': 'body_vertical.png',
+    'body_topleft': 'body_topleft.png',
+    'body_topright': 'body_topright.png',
+    'body_bottomleft': 'body_bottomleft.png',
+    'body_bottomright': 'body_bottomright.png',
+    'tail_up': 'tail_up.png',
+    'tail_down': 'tail_down.png',
+    'tail_left': 'tail_left.png',
+    'tail_right': 'tail_right.png',
+    'fruit': 'apple.png',
+}
 
 CELL_SIZE = 32
 FPS = 10
@@ -61,6 +82,17 @@ def get_segment_type(prev, current, next_seg, width: int, height: int) -> str:
         return 'body_horizontal' if d_in[0] != 0 else 'body_vertical'
 
     return TURN_MAP[(d_in, d_out)]
+
+def load_assets(cell_size: int) -> dict:
+    assets = {}
+    for key, filename in SPRITE_FILES.items():
+        path = os.path.join(ASSETS_DIR, filename)
+        if os.path.exists(path):
+            img = pygame.image.load(path)
+            assets[key] = pygame.transform.scale(img, (cell_size, cell_size))
+        else:
+            assets[key] = None
+    return assets
 
 class PygameRenderer:
     def __init__(self, width: int, height: int, cell_size: int = CELL_SIZE):
