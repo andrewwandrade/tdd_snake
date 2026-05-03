@@ -1,6 +1,10 @@
 import pygame
 
 CELL_SIZE = 32
+COLOR_BG = (15, 15, 15)
+COLOR_SNAKE_HEAD = (80, 220, 80)
+COLOR_SNAKE_BODY = (40, 160, 40)
+COLOR_FRUIT = (220, 60, 60)
 
 KEY_MAP = {
     pygame.K_w: 'w',
@@ -38,6 +42,25 @@ class PygameRenderer:
                 if cmd is not None:
                     return cmd
         return None
+
+    def draw_cell(self, x: int, y: int, color: tuple, shrink: int = 2):
+        rect = pygame.Rect(
+            x * self.cell_size + shrink,
+            y * self.cell_size + shrink,
+            self.cell_size - shrink * 2,
+            self.cell_size - shrink * 2,
+        )
+        pygame.draw.rect(self.screen, color, rect, border_radius=4)
+
+    def build_frame(self, game):
+        self.screen.fill(COLOR_BG)
+
+        for fx, fy in game.fruits:
+            self.draw_cell(fx, fy, COLOR_FRUIT, shrink=4)
+
+        for i, (bx, by) in enumerate(game.body):
+            color = COLOR_SNAKE_HEAD if i == 0 else COLOR_SNAKE_BODY
+            self.draw_cell(bx, by, color)
 
     def quit(self):
         pygame.quit()
