@@ -2,6 +2,7 @@ import os
 import pygame
 from snake_logic import Snake
 from snake_pygame import get_segment_type
+from snake_pygame import load_assets
 
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 os.environ["SDL_AUDIODRIVER"] = "dummy"
@@ -93,3 +94,29 @@ def test_tail_direita():
 
 def test_head_wrap_horizontal():
     assert get_segment_type(None, (19,5), (0,5), 20, 20) == 'head_right'
+
+def test_load_assets_returns_dictionary():
+    pygame.init()
+    assets = load_assets(cell_size=32)
+    assert isinstance(assets, dict)
+
+def test_load_assets_contains_required_keys():
+    pygame.init()
+    assets = load_assets(cell_size=32)
+    chaves = [
+        'head_up', 'head_down', 'head_left', 'head_right',
+        'body_horizontal', 'body_vertical',
+        'body_topleft', 'body_topright',
+        'body_bottomleft', 'body_bottomright',
+        'tail_up', 'tail_down', 'tail_left', 'tail_right',
+        'fruit',
+    ]
+    for chave in chaves:
+        assert chave in assets, f"chave ausente: {chave}"
+
+def test_load_assets_values_are_surface_or_none():
+    pygame.init()
+    assets = load_assets(cell_size=32)
+    for key, val in assets.items():
+        assert val is None or isinstance(val, pygame.Surface), \
+            f"{key} deveria ser Surface ou None, é {type(val)}"
