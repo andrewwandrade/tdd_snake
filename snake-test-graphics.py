@@ -61,3 +61,16 @@ def test_draw_game_over():
     renderer.build_frame(Snake(10, 10))
     renderer.draw_game_over(3)
     renderer.quit()
+
+def test_flip_not_exception():
+    pygame.init()
+    renderer = PygameRenderer(width=10, height=10, cell_size=20)
+    renderer.build_frame(Snake(10, 10))
+    renderer.flip()
+    renderer.quit()
+
+def test_tick_not_exception():
+    pygame.init()
+    renderer = PygameRenderer(width=10, height=10, cell_size=20)
+    renderer.tick(60)
+    renderer.quit()
